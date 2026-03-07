@@ -41,12 +41,34 @@ app.use(express.json({ limit: "4mb" }));
 app.use(cors());
 
 // Routes setup
-app.get("/", async (_, res) => {
-  const mongoStatus = await connectDB();
-  res.json({
-    message: "Backend is running on Vercel 🚀",
-    mongodb: mongoStatus ? "Connected ✅" : "Disconnected ❌"
-  });
+let isConnected = false;
+import mongoose from "mongoose";
+
+const connectDBForStatus = async () => {
+  if (isConnected) return;
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    isConnected = true;
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+  }
+};
+
+app.get("/", async (req, res) => {
+  try {
+    await connectDBForStatus();
+    const dbState = mongoose.connection.readyState; // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+    res.json({
+      message: "Backend is running on Vercel 🚀",
+      mongodb: dbState === 1 ? "Connected ✅" : "Not connected ❌",
+    });
+  } catch (error) {
+    res.json({
+      message: "Backend is running on Vercel 🚀",
+      mongodb: "Not connected ❌",
+    });
+  }
 });
 app.use("/api/status", (req, res) => res.send("Server is live"));
 
