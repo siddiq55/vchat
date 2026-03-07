@@ -41,7 +41,7 @@ app.use(express.json({ limit: "4mb" }));
 app.use(cors());
 
 // Routes setup
-app.get("/", async (req, res) => {
+app.get("/", async (_, res) => {
   const mongoStatus = await connectDB();
   res.json({
     message: "Backend is running on Vercel 🚀",
