@@ -41,10 +41,11 @@ app.use(express.json({ limit: "4mb" }));
 app.use(cors());
 
 // Routes setup
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const mongoStatus = await connectDB();
   res.json({
     message: "Backend is running on Vercel 🚀",
-    mongodb: "Connected ✅"
+    mongodb: mongoStatus ? "Connected ✅" : "Disconnected ❌"
   });
 });
 app.use("/api/status", (req, res) => res.send("Server is live"));
