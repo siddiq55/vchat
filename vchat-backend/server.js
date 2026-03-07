@@ -41,8 +41,11 @@ app.use(express.json({ limit: "4mb" }));
 app.use(cors());
 
 // Routes setup
-app.get("/", (res) => {
-  res.send("Welcome to V Chat API - MongoDB Connected");
+app.get("/", (req, res) => {
+  res.json({
+    message: "Backend is running on Vercel 🚀",
+    mongodb: "Connected ✅"
+  });
 });
 app.use("/api/status", (req, res) => res.send("Server is live"));
 
