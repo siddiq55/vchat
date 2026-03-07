@@ -41,8 +41,8 @@ app.use(express.json({ limit: "4mb" }));
 app.use(cors());
 
 // Routes setup
-app.get("/", (req, res) => {
-  res.send("Welcome to V Chat API");
+app.get("/", (res) => {
+  res.send("Welcome to V Chat API - MongoDB Connected");
 });
 app.use("/api/status", (req, res) => res.send("Server is live"));
 
