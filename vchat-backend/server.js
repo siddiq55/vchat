@@ -42,7 +42,7 @@ app.use(cors());
 
 // Routes setup
 app.get("/", (req, res) => {
-  res.send("Welcome to Quick Chat API");
+  res.send("Welcome to V Chat API");
 });
 app.use("/api/status", (req, res) => res.send("Server is live"));
 
